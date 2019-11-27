@@ -1,6 +1,8 @@
 #import <Cordova/CDV.h>
 #import "AppDelegate.h"
 
+extern NSMutableString *apnsToken;
+
 @interface FirebasePlugin : CDVPlugin
 + (FirebasePlugin *) firebasePlugin;
 - (void)getVerificationID:(CDVInvokedUrlCommand*)command;
@@ -38,5 +40,4 @@
 @property (nonatomic, copy) NSString *tokenRefreshCallbackId;
 @property (nonatomic, retain) NSMutableArray *notificationStack;
 @property (nonatomic, readwrite) NSMutableDictionary* traces;
-
 @end

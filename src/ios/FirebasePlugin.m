@@ -19,6 +19,8 @@
 #define NSFoundationVersionNumber_iOS_9_x_Max 1299
 #endif
 
+NSMutableString *apnsToken;
+
 @implementation FirebasePlugin
 
 @synthesize notificationCallbackId;
@@ -60,8 +62,15 @@ static FirebasePlugin *firebasePlugin;
     [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
 }
 
+// for Android only
 - (void)getToken:(CDVInvokedUrlCommand *)command {
     CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:[[FIRInstanceID instanceID] token]];
+    [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+}
+
+// for iOS only
+- (void)getAPNSToken:(CDVInvokedUrlCommand *)command {
+    CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:apnsToken];
     [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
 }
 
@@ -473,7 +482,7 @@ static FirebasePlugin *firebasePlugin;
 }
 
 - (void)clearAllNotifications:(CDVInvokedUrlCommand *)command {
-	[self.commandDelegate runInBackground:^{
+    [self.commandDelegate runInBackground:^{
         [[UIApplication sharedApplication] setApplicationIconBadgeNumber:1];
         [[UIApplication sharedApplication] setApplicationIconBadgeNumber:0];
 
